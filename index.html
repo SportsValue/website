@@ -446,7 +446,7 @@
 </section>
 
 <footer>
-  <div class="footer-logo"><img src="logo.png" alt="Antreno"><span>© 2026 Antreno</span></div>
+  <div class="footer-logo"><img src="3_logo.png" alt="Antreno"><span>© 2026 Antreno</span></div>
   <div class="footer-links"><a href="#">Termeni</a><a href="#">Confidențialitate</a><a href="#">Contact</a></div>
 </footer>
 
@@ -481,6 +481,11 @@
   document.getElementById('ctaBtn').addEventListener('click', () => {
     const input = document.getElementById('emailInput');
     if (input.value && input.value.includes('@')) {
+      await fetch('https://formspree.io/forms/meeldarn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: input.value })
+      });
       input.value = '';
       document.getElementById('ctaSuccess').style.display = 'block';
       const btn = document.getElementById('ctaBtn');
