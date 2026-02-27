@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antreno — AI Sports Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0c0b09;
+    --ink: #1a1915;
+    --warm: #f5f0e8;
+    --cream: #ede7db;
+    --orange: #e8562a;
+    --orange-soft: rgba(232, 86, 42, 0.08);
+    --orange-mid: rgba(232, 86, 42, 0.25);
+    --terra: #c44b24;
+    --olive: #3d5a3e;
+    --slate: #6b6560;
+    --text: #2c2a25;
+    --text-light: #8a847a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.75' numOctaves='4' type='fractalNoise'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 10000;
+  }
+
+  /* ═══════════ NAV ═══════════ */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    padding: 20px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--black); }
+  .nav-logo img { height: 38px; width: auto; }
+  .nav-right { display: flex; align-items: center; gap: 36px; }
+  .nav-right a {
+    text-decoration: none; color: var(--text); font-size: 0.88rem;
+    font-weight: 500; letter-spacing: 0.3px; position: relative;
+  }
+  .nav-right a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 2px; background: var(--orange); transition: width 0.3s;
+  }
+  .nav-right a:hover::after { width: 100%; }
+  .nav-btn {
+    background: var(--black); color: var(--warm) !important;
+    padding: 10px 28px; border-radius: 6px;
+    font-weight: 600 !important; transition: background 0.2s;
+  }
+  .nav-btn::after { display: none !important; }
+  .nav-btn:hover { background: var(--orange); }
+
+  /* ═══════════ HERO ═══════════ */
+  .hero {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    padding: 0 48px; position: relative; overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding-right: 60px; z-index: 2;
+  }
+  .hero-eyebrow {
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 24px;
+    opacity: 0; animation: slideIn 0.7s ease forwards 0.2s;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 9vw, 8.5rem); line-height: 0.88;
+    letter-spacing: -1px; color: var(--black); margin-bottom: 32px;
+    opacity: 0; animation: slideIn 0.7s ease forwards 0.35s;
+  }
+  .hero h1 em {
+    font-style: italic; font-family: 'DM Sans', sans-serif;
+    font-weight: 300; font-size: 0.42em; letter-spacing: 2px;
+    display: block; margin-top: 8px; color: var(--slate);
+  }
+  .hero-desc {
+    font-size: 1.12rem; line-height: 1.75; color: var(--slate);
+    max-width: 440px; margin-bottom: 40px;
+    opacity: 0; animation: slideIn 0.7s ease forwards 0.5s;
+  }
+  .hero-actions {
+    display: flex; gap: 16px; align-items: center;
+    opacity: 0; animation: slideIn 0.7s ease forwards 0.65s;
+  }
+  .btn-main {
+    background: var(--orange); color: #fff; padding: 16px 40px;
+    border-radius: 6px; font-weight: 700; font-size: 0.95rem;
+    text-decoration: none; letter-spacing: 0.5px;
+    transition: transform 0.2s, box-shadow 0.3s;
+    border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-main:hover { transform: translateY(-2px); box-shadow: 0 12px 32px var(--orange-mid); }
+  .btn-ghost {
+    color: var(--text); text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    display: flex; align-items: center; gap: 8px; transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--orange); }
+  .btn-ghost svg { transition: transform 0.2s; }
+  .btn-ghost:hover svg { transform: translateX(4px); }
+
+  .hero-right { position: relative; display: flex; align-items: center; justify-content: center; }
+  .hero-visual { position: relative; width: 100%; max-width: 520px; }
+
+  .hero-card {
+    background: #fff; border-radius: 16px; padding: 32px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+    position: relative; z-index: 2;
+    opacity: 0; animation: cardIn 0.8s ease forwards 0.6s;
+  }
+  .hero-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .hero-card-badge { background: var(--orange-soft); color: var(--orange); padding: 6px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+  .hero-card-time { font-size: 0.8rem; color: var(--text-light); }
+
+  .voice-wave { display: flex; align-items: center; gap: 3px; height: 48px; margin-bottom: 20px; }
+  .voice-bar { width: 4px; background: var(--orange); border-radius: 4px; animation: wave 1.2s ease-in-out infinite; }
+  .voice-bar:nth-child(odd) { opacity: 0.6; }
+  @keyframes wave { 0%, 100% { height: 12px; } 50% { height: 40px; } }
+
+  .hero-card-text { font-size: 0.92rem; color: var(--text); line-height: 1.7; border-left: 3px solid var(--orange); padding-left: 16px; margin-bottom: 20px; }
+  .hero-card-text strong { color: var(--orange); font-weight: 600; }
+  .hero-card-athletes { display: flex; gap: 8px; flex-wrap: wrap; }
+  .athlete-chip { background: var(--cream); padding: 6px 14px; border-radius: 50px; font-size: 0.78rem; font-weight: 500; }
+
+  .hero-float {
+    position: absolute; padding: 20px 24px; border-radius: 14px; z-index: 3;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    opacity: 0; animation: floatIn 0.8s ease forwards 0.9s;
+  }
+  .hero-float-1 { bottom: -20px; left: -30px; background: var(--black); color: var(--warm); }
+  .hero-float-1 .float-label { font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light); margin-bottom: 4px; }
+  .hero-float-1 .float-value { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--orange); line-height: 1; }
+  .hero-float-2 { top: 40px; right: -20px; background: var(--black); color: var(--warm); display: flex; align-items: center; gap: 12px; }
+  .float-dot { width: 10px; height: 10px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+  .hero-float-2 span { font-size: 0.85rem; font-weight: 500; }
+
+  /* ═══════════ MARQUEE ═══════════ */
+  .marquee-wrap { overflow: hidden; padding: 40px 0; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); background: var(--cream); }
+  .marquee { display: flex; gap: 60px; animation: scroll 20s linear infinite; white-space: nowrap; }
+  .marquee span { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 4px; color: var(--text-light); opacity: 0.5; }
+  .marquee span::before { content: '◆'; margin-right: 60px; font-size: 0.6rem; vertical-align: middle; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ═══════════ FEATURES BENTO ═══════════ */
+  .features { padding: 140px 48px; max-width: 1300px; margin: 0 auto; }
+  .features-header { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 100px; align-items: end; }
+  .features-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5rem); line-height: 0.92; color: var(--black); }
+  .features-header p { font-size: 1.05rem; line-height: 1.75; color: var(--slate); max-width: 400px; }
+
+  .bento { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(200px, auto); gap: 16px; }
+  .bento-card {
+    background: #fff; border-radius: 20px; padding: 36px; position: relative;
+    overflow: hidden; transition: transform 0.4s cubic-bezier(0.2,0,0,1), box-shadow 0.4s;
+    cursor: default; display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .bento-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.07); }
+  .bento-1 { grid-column: span 7; grid-row: span 2; }
+  .bento-2 { grid-column: span 5; }
+  .bento-3 { grid-column: span 5; }
+  .bento-4 { grid-column: span 4; grid-row: span 2; }
+  .bento-5 { grid-column: span 4; }
+  .bento-6 { grid-column: span 4; }
+  .bento-card .card-num { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; line-height: 1; color: rgba(0,0,0,0.04); position: absolute; top: 20px; right: 28px; }
+  .bento-card .card-tag { font-size: 0.7rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .bento-1 .card-tag { color: var(--orange); }
+  .bento-2 .card-tag { color: #2563eb; }
+  .bento-3 .card-tag { color: var(--olive); }
+  .bento-4 .card-tag { color: #9333ea; }
+  .bento-5 .card-tag { color: #dc2626; }
+  .bento-6 .card-tag { color: #ca8a04; }
+  .bento-card h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 12px; color: var(--black); }
+  .bento-card .card-desc { color: var(--slate); font-size: 0.92rem; line-height: 1.7; }
+
+  .bento-1 { background: var(--black); color: var(--warm); }
+  .bento-1 h3 { color: var(--warm); }
+  .bento-1 .card-desc { color: var(--text-light); }
+  .bento-1 .card-num { color: rgba(255,255,255,0.04); }
+
+  .mini-waveform { display: flex; align-items: end; gap: 2px; height: 60px; margin-top: 24px; }
+  .mini-waveform span { width: 6px; border-radius: 3px; background: var(--orange); display: block; animation: miniwave 1.5s ease-in-out infinite; }
+  @keyframes miniwave { 0%, 100% { height: 10%; opacity: 0.3; } 50% { height: 100%; opacity: 1; } }
+
+  .transcript-preview { background: rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 20px; margin-top: 16px; font-size: 0.88rem; line-height: 1.7; color: rgba(255,255,255,0.7); border-left: 3px solid var(--orange); }
+  .transcript-preview strong { color: var(--orange); font-weight: 600; }
+
+  .bento-4 { background: linear-gradient(165deg, #1a1520, #0f0d18); color: var(--warm); }
+  .bento-4 h3 { color: var(--warm); }
+  .bento-4 .card-desc { color: rgba(255,255,255,0.5); }
+  .bento-4 .card-num { color: rgba(255,255,255,0.04); }
+
+  .correlation-item { background: rgba(255,255,255,0.06); border-radius: 10px; padding: 14px 16px; margin-top: 12px; font-size: 0.82rem; line-height: 1.6; color: rgba(255,255,255,0.65); }
+  .correlation-item .corr-arrow { color: #a78bfa; font-weight: 700; margin: 0 6px; }
+
+  .mini-chat { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .mini-msg { padding: 10px 16px; border-radius: 12px; font-size: 0.84rem; line-height: 1.5; max-width: 85%; }
+  .mini-msg.user { background: var(--cream); align-self: flex-end; border-bottom-right-radius: 4px; }
+  .mini-msg.bot { background: var(--orange-soft); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid rgba(232,86,42,0.1); }
+
+  /* ═══════════ JOURNEY ═══════════ */
+  .journey { padding: 140px 48px; background: var(--black); color: var(--warm); position: relative; overflow: hidden; }
+  .journey::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,86,42,0.08), transparent 70%); pointer-events: none; }
+  .journey-header { max-width: 1200px; margin: 0 auto 80px; }
+  .journey-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5rem); line-height: 0.92; margin-bottom: 16px; }
+  .journey-header p { color: var(--text-light); font-size: 1.05rem; max-width: 500px; }
+
+  .timeline { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; position: relative; }
+  .timeline::before { content: ''; position: absolute; top: 36px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), rgba(255,255,255,0.1), transparent); }
+  .tl-item { text-align: left; opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+  .tl-item.visible { opacity: 1; transform: translateY(0); }
+  .tl-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--orange); line-height: 1; margin-bottom: 24px; }
+  .tl-item h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--warm); }
+  .tl-item p { font-size: 0.88rem; color: var(--text-light); line-height: 1.7; }
+
+  /* ═══════════ TESTIMONIAL ═══════════ */
+  .testimonial { padding: 120px 48px; display: flex; justify-content: center; }
+  .test-inner { max-width: 700px; text-align: center; }
+  .test-quote { font-size: 1.55rem; line-height: 1.65; font-weight: 400; color: var(--black); margin-bottom: 28px; font-style: italic; position: relative; }
+  .test-quote::before { content: '\201C'; font-family: 'Bebas Neue', sans-serif; font-size: 6rem; color: var(--orange); opacity: 0.2; position: absolute; top: -40px; left: 50%; transform: translateX(-50%); line-height: 1; }
+  .test-author { font-size: 0.9rem; color: var(--text-light); }
+  .test-author strong { color: var(--text); font-weight: 600; }
+
+  /* ═══════════ CTA ═══════════ */
+  .cta { padding: 120px 48px; background: var(--cream); text-align: center; border-top: 1px solid rgba(0,0,0,0.05); }
+  .cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.95; color: var(--black); margin-bottom: 16px; }
+  .cta > p { color: var(--slate); font-size: 1.05rem; max-width: 440px; margin: 0 auto 40px; line-height: 1.7; }
+  .cta-form { display: flex; gap: 10px; max-width: 460px; margin: 0 auto; }
+  .cta-input { flex: 1; padding: 16px 24px; border: 2px solid rgba(0,0,0,0.08); border-radius: 8px; background: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text); outline: none; transition: border-color 0.2s; }
+  .cta-input:focus { border-color: var(--orange); }
+  .cta-input::placeholder { color: var(--text-light); }
+  .cta-success { color: var(--olive); font-weight: 600; margin-top: 16px; display: none; font-size: 0.95rem; }
+
+  /* ═══════════ FOOTER ═══════════ */
+  footer { padding: 48px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.06); font-size: 0.85rem; color: var(--text-light); }
+  .footer-logo { display: flex; align-items: center; gap: 10px; }
+  .footer-logo img { height: 28px; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--text-light); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--orange); }
+
+  /* ═══════════ ANIMATIONS ═══════════ */
+  @keyframes slideIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(40px) rotate(2deg); } to { opacity: 1; transform: translateY(0) rotate(0); } }
+  @keyframes floatIn { from { opacity: 0; transform: scale(0.85) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74,222,128,0.4); } 50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(74,222,128,0); } }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══════════ RESPONSIVE ═══════════ */
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; padding: 160px 32px 80px; }
+    .hero-left { padding-right: 0; }
+    .hero-right { display: none; }
+    .features { padding: 100px 32px; }
+    .features-header { grid-template-columns: 1fr; gap: 16px; }
+    .bento { grid-template-columns: 1fr; }
+    .bento-card { grid-column: span 1 !important; grid-row: span 1 !important; }
+    .timeline { grid-template-columns: 1fr 1fr; }
+    .journey { padding: 100px 32px; }
+  }
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-right a:not(.nav-btn) { display: none; }
+    .hero { padding: 140px 20px 60px; }
+    .features { padding: 80px 20px; }
+    .journey { padding: 80px 20px; }
+    .timeline { grid-template-columns: 1fr; }
+    .testimonial { padding: 80px 20px; }
+    .cta { padding: 80px 20px; }
+    .cta-form { flex-direction: column; }
+    footer { flex-direction: column; gap: 20px; padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo"><img src="logo.png" alt="Antreno"></a>
+  <div class="nav-right">
+    <a href="#features">Funcții</a>
+    <a href="#journey">Proces</a>
+    <a href="#cta" class="nav-btn">Early Access</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">AI Sports Analyst</div>
+    <h1>FIECARE<br>ANTRENAMENT<br>CONTEAZĂ<em>Transformă observații în performanță</em></h1>
+    <p class="hero-desc">Antreno ascultă, analizează și conectează punctele pe care ochiul uman le ratează. De la dictare vocală la rapoarte pentru părinți — totul în pilot automat.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-main">Încearcă gratuit</a>
+      <a href="#features" class="btn-ghost">Vezi cum funcționează <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M11 6l4 4-4 4"/></svg></a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-badge">🎙️ Înregistrare live</div>
+          <div class="hero-card-time">14:32</div>
+        </div>
+        <div class="voice-wave" id="voiceWave"></div>
+        <div class="hero-card-text">„<strong>Andrei</strong> — footwork excelent azi, dar serviciul încă are probleme de consistență. <strong>Maria</strong> — backhand-ul s-a îmbunătățit vizibil față de săptămâna trecută."</div>
+        <div class="hero-card-athletes">
+          <span class="athlete-chip">Andrei P.</span>
+          <span class="athlete-chip">Maria S.</span>
+          <span class="athlete-chip">+3 detectați</span>
+        </div>
+      </div>
+      <div class="hero-float hero-float-1">
+        <div class="float-label">Rapoarte generate</div>
+        <div class="float-value">2,847</div>
+      </div>
+      <div class="hero-float hero-float-2">
+        <div class="float-dot"></div>
+        <span>AI procesează...</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee" id="marquee">
+    <span>TENIS</span><span>FOTBAL</span><span>BASCHET</span><span>NATAȚIE</span><span>ATLETISM</span><span>GIMNASTICĂ</span><span>HANDBAL</span><span>VOLEI</span>
+    <span>TENIS</span><span>FOTBAL</span><span>BASCHET</span><span>NATAȚIE</span><span>ATLETISM</span><span>GIMNASTICĂ</span><span>HANDBAL</span><span>VOLEI</span>
+  </div>
+</div>
+
+<section class="features" id="features">
+  <div class="features-header reveal">
+    <h2>ȘASE MODULE.<br>ZERO BĂTĂI<br>DE CAP.</h2>
+    <p>Fiecare modul rezolvă o problemă reală din viața antrenorului. Fără funcții de prisos, fără complexitate artificială.</p>
+  </div>
+  <div class="bento">
+    <div class="bento-card bento-1 reveal">
+      <div class="card-num">01</div>
+      <div>
+        <span class="card-tag">ANTRENAMENT</span>
+        <h3>Dictează. AI-ul notează.</h3>
+        <p class="card-desc">Vorbești în timpul antrenamentului, Antreno transcrie și atribuie automat fiecare observație sportivului potrivit. După antrenament, ambele părți lasă feedback structurat.</p>
+      </div>
+      <div>
+        <div class="mini-waveform" id="miniWave"></div>
+        <div class="transcript-preview">„<strong>Andrei</strong> — serviciul a fost inconsistent azi, dar voleul a fost mult mai bun. Trebuie să lucrăm pe toss."</div>
+      </div>
+    </div>
+    <div class="bento-card bento-2 reveal">
+      <div class="card-num">02</div>
+      <span class="card-tag">RAPOARTE</span>
+      <h3>PDF-uri care chiar contează</h3>
+      <p class="card-desc">La fiecare ciclu de antrenament, părinții primesc un raport curat: progres, arii de lucru, recomandări. AI-ul filtrează noise-ul și păstrează esențialul.</p>
+    </div>
+    <div class="bento-card bento-3 reveal">
+      <div class="card-num">03</div>
+      <span class="card-tag">CALENDAR</span>
+      <h3>Tot programul, într-un loc</h3>
+      <p class="card-desc">Antrenamente, turnee, recuperare, pauze. Sincronizat și cu reminder-e inteligente bazate pe starea sportivului.</p>
+    </div>
+    <div class="bento-card bento-4 reveal">
+      <div class="card-num">04</div>
+      <div>
+        <span class="card-tag" style="color: #a78bfa;">MONITORIZARE</span>
+        <h3>Corelații pe care nu le vezi</h3>
+        <p class="card-desc">IoT + feedback manual. AI-ul descoperă pattern-uri ascunse în somn, alimentație și performanță.</p>
+      </div>
+      <div>
+        <div class="correlation-item">🥣 Lapte + fulgi dimineața <span class="corr-arrow">→</span> oboseală +23% la antrenament</div>
+        <div class="correlation-item">😴 Somn &lt;7h <span class="corr-arrow">→</span> concentrare scăzută la exerciții tehnice</div>
+        <div class="correlation-item">🏃 Alergare matinală <span class="corr-arrow">→</span> reacție +15% mai bună</div>
+      </div>
+    </div>
+    <div class="bento-card bento-5 reveal">
+      <div class="card-num">05</div>
+      <span class="card-tag">CHATBOT ANTRENOR</span>
+      <h3>Coach Clone</h3>
+      <p class="card-desc">Răspunde cu personalitatea și regulile antrenorului.</p>
+      <div class="mini-chat">
+        <div class="mini-msg user">Pot să mănânc brownie? 🍫</div>
+        <div class="mini-msg bot">Nu. Ai grijă la calorii — mâine ai antrenament de rezistență. Ia o banană.</div>
+      </div>
+    </div>
+    <div class="bento-card bento-6 reveal">
+      <div class="card-num">06</div>
+      <span class="card-tag">ARHIVĂ TURNEE</span>
+      <h3>Fiecare competiție, documentată</h3>
+      <p class="card-desc">Rezultate, evoluție, statistici individuale. Un istoric complet al parcursului competițional.</p>
+    </div>
+  </div>
+</section>
+
+<section class="journey" id="journey">
+  <div class="journey-header reveal">
+    <h2>DE LA TEREN<br>LA RAPORT.<br>AUTOMAT.</h2>
+    <p>Patru pași. Fără efort suplimentar din partea antrenorului.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-num">01</div><h3>Antrenorul dictează</h3><p>Pe teren, în mișcare. Observațiile se înregistrează pe telefon în timp real.</p></div>
+    <div class="tl-item"><div class="tl-num">02</div><h3>AI-ul procesează</h3><p>Transcripție, clasificare pe sportiv, corelare cu datele existente.</p></div>
+    <div class="tl-item"><div class="tl-num">03</div><h3>Insight-uri apar</h3><p>Pattern-uri, corelații, recomandări personalizate pentru fiecare sportiv.</p></div>
+    <div class="tl-item"><div class="tl-num">04</div><h3>Toți beneficiază</h3><p>Antrenorul decide mai bine. Părinții înțeleg progresul. Sportivul crește.</p></div>
+  </div>
+</section>
+
+<section class="testimonial reveal">
+  <div class="test-inner">
+    <p class="test-quote">Înainte scriam notițe pe hârtie și le pierdeam. Acum dictez în timp ce antrenez și părinții primesc rapoarte pe care le înțeleg cu adevărat.</p>
+    <div class="test-author">— <strong>Alexandru M.</strong>, antrenor de tenis, 14 ani experiență</div>
+  </div>
+</section>
+
+<section class="cta" id="cta">
+  <div class="reveal">
+    <h2>FII PRINTRE PRIMII<br>CARE TESTEAZĂ ANTRENO</h2>
+    <p>Lansăm în curând. Lasă-ne email-ul tău și te contactăm când e gata.</p>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="email@adresa.ro" id="emailInput">
+      <button class="btn-main" id="ctaBtn">Vreau acces</button>
+    </div>
+    <p class="cta-success" id="ctaSuccess">✓ Te-am adăugat pe lista de așteptare!</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo"><img src="logo.png" alt="Antreno"><span>© 2026 Antreno</span></div>
+  <div class="footer-links"><a href="#">Termeni</a><a href="#">Confidențialitate</a><a href="#">Contact</a></div>
+</footer>
+
+<script>
+  // Voice wave bars
+  const waveEl = document.getElementById('voiceWave');
+  for (let i = 0; i < 40; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'voice-bar';
+    bar.style.animationDelay = `${i * 0.06}s`;
+    bar.style.height = `${12 + Math.random() * 30}px`;
+    waveEl.appendChild(bar);
+  }
+  // Mini waveform
+  const miniEl = document.getElementById('miniWave');
+  for (let i = 0; i < 50; i++) {
+    const bar = document.createElement('span');
+    bar.style.animationDelay = `${i * 0.05}s`;
+    bar.style.height = `${8 + Math.random() * 45}px`;
+    miniEl.appendChild(bar);
+  }
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .tl-item').forEach(el => obs.observe(el));
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+  // CTA
+  document.getElementById('ctaBtn').addEventListener('click', () => {
+    const input = document.getElementById('emailInput');
+    if (input.value && input.value.includes('@')) {
+      input.value = '';
+      document.getElementById('ctaSuccess').style.display = 'block';
+      const btn = document.getElementById('ctaBtn');
+      btn.textContent = 'Trimis!';
+      btn.style.background = 'var(--olive)';
+      setTimeout(() => { btn.textContent = 'Vreau acces'; btn.style.background = ''; }, 3000);
+    }
+  });
+</script>
+</body>
+</html>
