@@ -73,6 +73,13 @@
   .nav-btn::after { display: none !important; }
   .nav-btn:hover { background: var(--orange); }
 
+   /* ═══════════ LANG TOGGLE ═══════════ */
+  .lang-toggle { display: flex; background: rgba(0,0,0,0.06); border-radius: 6px; overflow: hidden; }
+  .lang-btn { background: none; border: none; padding: 6px 12px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; color: var(--text-light); transition: all 0.2s; }
+  .lang-btn.active { background: var(--orange); color: #fff; }
+  nav.scrolled .lang-toggle { background: rgba(0,0,0,0.06); }
+  nav:not(.scrolled) .lang-toggle { background: rgba(0,0,0,0.08); }
+  
   /* ═══════════ HERO ═══════════ */
   .hero {
     min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
@@ -299,6 +306,7 @@
     .demo { padding: 80px 20px; }
     nav { padding: 16px 20px; }
     .nav-right a:not(.nav-btn) { display: none; }
+    .lang-btn { padding: 5px 10px; font-size: 0.72rem; }
     .hero { padding: 140px 20px 60px; }
     .features { padding: 80px 20px; }
     .journey { padding: 80px 20px; }
@@ -315,8 +323,13 @@
 <nav id="mainNav">
   <a href="#" class="nav-logo"><img src="3_logo.png" alt="Antreno"></a>
   <div class="nav-right">
-    <a href="#features">Funcții</a>
-    <a href="#journey">Proces</a>
+     <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="ro">RO</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <a href="#features" data-ro="Funcții" data-en="Features">Funcții</a>
+    <a href="#journey" data-ro="Proces" data-en="Process">Proces</a>
+    <a href="#cta" class="nav-btn">Early Access</a>
     <a href="#cta" class="nav-btn">Early Access</a>
   </div>
 </nav>
@@ -324,35 +337,35 @@
 <section class="hero">
   <div class="hero-left">
     <div class="hero-eyebrow">AI Sports Analyst</div>
-    <h1>FIECARE<br>ANTRENAMENT<br>CONTEAZĂ<em>Transformă observații în performanță</em></h1>
-    <p class="hero-desc">Antreno ascultă, analizează și conectează punctele pe care ochiul uman le ratează. De la dictare vocală la rapoarte pentru părinți — totul în pilot automat.</p>
+     <h1 data-ro="FIECARE&lt;br&gt;ANTRENAMENT&lt;br&gt;CONTEAZĂ&lt;em&gt;Transformă observații în performanță&lt;/em&gt;" data-en="EVERY&lt;br&gt;TRAINING&lt;br&gt;COUNTS&lt;em&gt;Turn observations into performance&lt;/em&gt;">FIECARE<br>ANTRENAMENT<br>CONTEAZĂ<em>Transformă observații în performanță</em></h1>
+    <p class="hero-desc" data-ro="Antreno ascultă, analizează și conectează punctele pe care ochiul uman le ratează. De la dictare vocală la rapoarte pentru părinți — totul în pilot automat." data-en="Antreno listens, analyzes and connects the dots the human eye misses. From voice dictation to parent reports — everything on autopilot.">Antreno ascultă, analizează și conectează punctele pe care ochiul uman le ratează. De la dictare vocală la rapoarte pentru părinți — totul în pilot automat.</p>
     <div class="hero-actions">
-      <a href="#cta" class="btn-main">Încearcă gratuit</a>
-      <a href="#features" class="btn-ghost">Vezi cum funcționează <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M11 6l4 4-4 4"/></svg></a>
+      <a href="#cta" class="btn-main" data-ro="Încearcă gratuit" data-en="Try for free">Încearcă gratuit</a>
+      <a href="#features" class="btn-ghost" data-ro="Vezi cum funcționează" data-en="See how it works">Vezi cum funcționează <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M11 6l4 4-4 4"/></svg></a>
     </div>
   </div>
   <div class="hero-right">
     <div class="hero-visual">
       <div class="hero-card">
         <div class="hero-card-header">
-          <div class="hero-card-badge">🎙️ Înregistrare live</div>
+           <div class="hero-card-badge" data-ro="🎙️ Înregistrare live" data-en="🎙️ Live recording">🎙️ Înregistrare live</div>
           <div class="hero-card-time">14:32</div>
         </div>
         <div class="voice-wave" id="voiceWave"></div>
-        <div class="hero-card-text">„<strong>Andrei</strong> — footwork excelent azi, dar serviciul încă are probleme de consistență. <strong>Maria</strong> — backhand-ul s-a îmbunătățit vizibil față de săptămâna trecută."</div>
+       <div class="hero-card-text" data-ro="„&lt;strong&gt;Andrei&lt;/strong&gt; — footwork excelent azi, dar serviciul încă are probleme de consistență. &lt;strong&gt;Maria&lt;/strong&gt; — backhand-ul s-a îmbunătățit vizibil față de săptămâna trecută."" data-en=""&lt;strong&gt;Andrei&lt;/strong&gt; — excellent footwork today, but the serve still has consistency issues. &lt;strong&gt;Maria&lt;/strong&gt; — backhand has visibly improved compared to last week."">„<strong>Andrei</strong> — footwork excelent azi, dar serviciul încă are probleme de consistență. <strong>Maria</strong> — backhand-ul s-a îmbunătățit vizibil față de săptămâna trecută."</div>
         <div class="hero-card-athletes">
           <span class="athlete-chip">Andrei P.</span>
           <span class="athlete-chip">Maria S.</span>
-          <span class="athlete-chip">+3 detectați</span>
+           <span class="athlete-chip" data-ro="+3 detectați" data-en="+3 detected">+3 detectați</span>
         </div>
       </div>
       <div class="hero-float hero-float-1">
-        <div class="float-label">Rapoarte generate</div>
+         <div class="float-label" data-ro="Rapoarte generate" data-en="Reports generated">Rapoarte generate</div>
         <div class="float-value">2,847</div>
       </div>
       <div class="hero-float hero-float-2">
         <div class="float-dot"></div>
-        <span>AI procesează...</span>
+        <span data-ro="AI procesează..." data-en="AI processing...">AI procesează...</span>
       </div>
     </div>
   </div>
@@ -360,97 +373,97 @@
 
 <div class="marquee-wrap">
   <div class="marquee" id="marquee">
-    <span>TENIS</span><span>FOTBAL</span><span>BASCHET</span><span>NATAȚIE</span><span>ATLETISM</span><span>GIMNASTICĂ</span><span>HANDBAL</span><span>VOLEI</span>
-    <span>TENIS</span><span>FOTBAL</span><span>BASCHET</span><span>NATAȚIE</span><span>ATLETISM</span><span>GIMNASTICĂ</span><span>HANDBAL</span><span>VOLEI</span>
+    <span data-ro="TENIS" data-en="TENNIS">TENIS</span><span data-ro="FOTBAL" data-en="FOOTBALL">FOTBAL</span><span data-ro="BASCHET" data-en="BASKETBALL">BASCHET</span><span data-ro="NATAȚIE" data-en="SWIMMING">NATAȚIE</span><span data-ro="ATLETISM" data-en="ATHLETICS">ATLETISM</span><span data-ro="GIMNASTICĂ" data-en="GYMNASTICS">GIMNASTICĂ</span><span data-ro="HANDBAL" data-en="HANDBALL">HANDBAL</span><span data-ro="VOLEI" data-en="VOLLEYBALL">VOLEI</span>
+    <span data-ro="TENIS" data-en="TENNIS">TENIS</span><span data-ro="FOTBAL" data-en="FOOTBALL">FOTBAL</span><span data-ro="BASCHET" data-en="BASKETBALL">BASCHET</span><span data-ro="NATAȚIE" data-en="SWIMMING">NATAȚIE</span><span data-ro="ATLETISM" data-en="ATHLETICS">ATLETISM</span><span data-ro="GIMNASTICĂ" data-en="GYMNASTICS">GIMNASTICĂ</span><span data-ro="HANDBAL" data-en="HANDBALL">HANDBAL</span><span data-ro="VOLEI" data-en="VOLLEYBALL">VOLEI</span>
   </div>
 </div>
 
 <section class="features" id="features">
   <div class="features-header reveal">
-    <h2>ȘASE MODULE.<br>ZERO BĂTĂI<br>DE CAP.</h2>
-    <p>Fiecare modul rezolvă o problemă reală din viața antrenorului. Fără funcții de prisos, fără complexitate artificială.</p>
+    <h2 data-ro="ȘASE MODULE.&lt;br&gt;ZERO BĂTĂI&lt;br&gt;DE CAP." data-en="SIX MODULES.&lt;br&gt;ZERO&lt;br&gt;HEADACHES.">ȘASE MODULE.<br>ZERO BĂTĂI<br>DE CAP.</h2>
+    <p data-ro="Fiecare modul rezolvă o problemă reală din viața antrenorului. Fără funcții de prisos, fără complexitate artificială." data-en="Each module solves a real problem in a coach's life. No unnecessary features, no artificial complexity.">Fiecare modul rezolvă o problemă reală din viața antrenorului. Fără funcții de prisos, fără complexitate artificială.</p>
   </div>
   <div class="bento">
     <div class="bento-card bento-1 reveal">
       <div class="card-num">01</div>
       <div>
-        <span class="card-tag">ANTRENAMENT</span>
-        <h3>Dictează. AI-ul notează.</h3>
-        <p class="card-desc">Vorbești în timpul antrenamentului, Antreno transcrie și atribuie automat fiecare observație sportivului potrivit. După antrenament, ambele părți lasă feedback structurat.</p>
+         <span class="card-tag" data-ro="ANTRENAMENT" data-en="TRAINING">ANTRENAMENT</span>
+        <h3 data-ro="Dictează. AI-ul notează." data-en="Dictate. AI takes notes.">Dictează. AI-ul notează.</h3>
+        <p class="card-desc" data-ro="Vorbești în timpul antrenamentului, Antreno transcrie și atribuie automat fiecare observație sportivului potrivit. După antrenament, ambele părți lasă feedback structurat." data-en="You speak during training, Antreno transcribes and automatically assigns each observation to the right athlete. After training, both sides leave structured feedback.">Vorbești în timpul antrenamentului, Antreno transcrie și atribuie automat fiecare observație sportivului potrivit. După antrenament, ambele părți lasă feedback structurat.</p>
       </div>
       <div>
         <div class="mini-waveform" id="miniWave"></div>
-        <div class="transcript-preview">„<strong>Andrei</strong> — serviciul a fost inconsistent azi, dar voleul a fost mult mai bun. Trebuie să lucrăm pe toss."</div>
+          <div class="transcript-preview" data-ro="„&lt;strong&gt;Andrei&lt;/strong&gt; — serviciul a fost inconsistent azi, dar voleul a fost mult mai bun. Trebuie să lucrăm pe toss."" data-en=""&lt;strong&gt;Andrei&lt;/strong&gt; — the serve was inconsistent today, but the volley was much better. We need to work on the toss."">„<strong>Andrei</strong> — serviciul a fost inconsistent azi, dar voleul a fost mult mai bun. Trebuie să lucrăm pe toss."</div>
       </div>
     </div>
     <div class="bento-card bento-2 reveal">
       <div class="card-num">02</div>
-      <span class="card-tag">RAPOARTE</span>
-      <h3>PDF-uri care chiar contează</h3>
-      <p class="card-desc">La fiecare ciclu de antrenament, părinții primesc un raport curat: progres, arii de lucru, recomandări. AI-ul filtrează noise-ul și păstrează esențialul.</p>
+       <span class="card-tag" data-ro="RAPOARTE" data-en="REPORTS">RAPOARTE</span>
+      <h3 data-ro="PDF-uri care chiar contează" data-en="PDFs that actually matter">PDF-uri care chiar contează</h3>
+      <p class="card-desc" data-ro="La fiecare ciclu de antrenament, părinții primesc un raport curat: progres, arii de lucru, recomandări. AI-ul filtrează noise-ul și păstrează esențialul." data-en="Every training cycle, parents receive a clean report: progress, areas to work on, recommendations. AI filters out the noise and keeps what matters.">La fiecare ciclu de antrenament, părinții primesc un raport curat: progres, arii de lucru, recomandări. AI-ul filtrează noise-ul și păstrează esențialul.</p>
     </div>
     <div class="bento-card bento-3 reveal">
       <div class="card-num">03</div>
-      <span class="card-tag">CALENDAR</span>
-      <h3>Tot programul, într-un loc</h3>
-      <p class="card-desc">Antrenamente, turnee, recuperare, pauze. Sincronizat și cu reminder-e inteligente bazate pe starea sportivului.</p>
+      <span class="card-tag" data-ro="CALENDAR" data-en="CALENDAR">CALENDAR</span>
+      <h3 data-ro="Tot programul, într-un loc" data-en="Your entire schedule, in one place">Tot programul, într-un loc</h3>
+      <p class="card-desc" data-ro="Antrenamente, turnee, recuperare, pauze. Sincronizat și cu reminder-e inteligente bazate pe starea sportivului." data-en="Training sessions, tournaments, recovery, breaks. Synced with smart reminders based on the athlete's condition.">Antrenamente, turnee, recuperare, pauze. Sincronizat și cu reminder-e inteligente bazate pe starea sportivului.</p>
     </div>
     <div class="bento-card bento-4 reveal">
       <div class="card-num">04</div>
       <div>
-        <span class="card-tag" style="color: #a78bfa;">MONITORIZARE</span>
-        <h3>Corelații pe care nu le vezi</h3>
-        <p class="card-desc">IoT + feedback manual. AI-ul descoperă pattern-uri ascunse în somn, alimentație și performanță.</p>
+        <span class="card-tag" style="color: #a78bfa;" data-ro="MONITORIZARE" data-en="MONITORING">MONITORIZARE</span>
+        <h3 data-ro="Corelații pe care nu le vezi" data-en="Correlations you can't see">Corelații pe care nu le vezi</h3>
+        <p class="card-desc" data-ro="IoT + feedback manual. AI-ul descoperă pattern-uri ascunse în somn, alimentație și performanță." data-en="IoT + manual feedback. AI discovers hidden patterns in sleep, nutrition and performance.">IoT + feedback manual. AI-ul descoperă pattern-uri ascunse în somn, alimentație și performanță.</p>
       </div>
       <div>
-        <div class="correlation-item">🥣 Lapte + fulgi dimineața <span class="corr-arrow">→</span> oboseală +23% la antrenament</div>
-        <div class="correlation-item">😴 Somn &lt;7h <span class="corr-arrow">→</span> concentrare scăzută la exerciții tehnice</div>
-        <div class="correlation-item">🏃 Alergare matinală <span class="corr-arrow">→</span> reacție +15% mai bună</div>
+        <div class="correlation-item" data-ro="🥣 Lapte + fulgi dimineața &lt;span class='corr-arrow'&gt;→&lt;/span&gt; oboseală +23% la antrenament" data-en="🥣 Milk + cereal in the morning &lt;span class='corr-arrow'&gt;→&lt;/span&gt; fatigue +23% at training">🥣 Lapte + fulgi dimineața <span class="corr-arrow">→</span> oboseală +23% la antrenament</div>
+        <div class="correlation-item" data-ro="😴 Somn &lt;7h &lt;span class='corr-arrow'&gt;→&lt;/span&gt; concentrare scăzută la exerciții tehnice" data-en="😴 Sleep &lt;7h &lt;span class='corr-arrow'&gt;→&lt;/span&gt; decreased focus on technical drills">😴 Somn &lt;7h <span class="corr-arrow">→</span> concentrare scăzută la exerciții tehnice</div>
+        <div class="correlation-item" data-ro="🏃 Alergare matinală &lt;span class='corr-arrow'&gt;→&lt;/span&gt; reacție +15% mai bună" data-en="🏃 Morning run &lt;span class='corr-arrow'&gt;→&lt;/span&gt; reaction +15% better">🏃 Alergare matinală <span class="corr-arrow">→</span> reacție +15% mai bună</div>
       </div>
     </div>
     <div class="bento-card bento-5 reveal">
       <div class="card-num">05</div>
-      <span class="card-tag">CHATBOT ANTRENOR</span>
+      <span class="card-tag" data-ro="CHATBOT ANTRENOR" data-en="COACH CHATBOT">CHATBOT ANTRENOR</span>
       <h3>Coach Clone</h3>
-      <p class="card-desc">Răspunde cu personalitatea și regulile antrenorului.</p>
+      <p class="card-desc" data-ro="Răspunde cu personalitatea și regulile antrenorului." data-en="Responds with the coach's personality and rules.">Răspunde cu personalitatea și regulile antrenorului.</p>
       <div class="mini-chat">
-        <div class="mini-msg user">Pot să mănânc brownie? 🍫</div>
-        <div class="mini-msg bot">Nu. Ai grijă la calorii — mâine ai antrenament de rezistență. Ia o banană.</div>
+       <div class="mini-msg user" data-ro="Pot să mănânc brownie? 🍫" data-en="Can I eat a brownie? 🍫">Pot să mănânc brownie? 🍫</div>
+        <div class="mini-msg bot" data-ro="Nu. Ai grijă la calorii — mâine ai antrenament de rezistență. Ia o banană." data-en="No. Watch your calories — tomorrow you have endurance training. Have a banana.">Nu. Ai grijă la calorii — mâine ai antrenament de rezistență. Ia o banană.</div>
       </div>
     </div>
     <div class="bento-card bento-6 reveal">
       <div class="card-num">06</div>
-      <span class="card-tag">ARHIVĂ TURNEE</span>
-      <h3>Fiecare competiție, documentată</h3>
-      <p class="card-desc">Rezultate, evoluție, statistici individuale. Un istoric complet al parcursului competițional.</p>
+      <span class="card-tag" data-ro="ARHIVĂ TURNEE" data-en="TOURNAMENT ARCHIVE">ARHIVĂ TURNEE</span>
+      <h3 data-ro="Fiecare competiție, documentată" data-en="Every competition, documented">Fiecare competiție, documentată</h3>
+      <p class="card-desc" data-ro="Rezultate, evoluție, statistici individuale. Un istoric complet al parcursului competițional." data-en="Results, progress, individual stats. A complete history of the competitive journey.">Rezultate, evoluție, statistici individuale. Un istoric complet al parcursului competițional.</p>
     </div>
   </div>
 </section>
 
 <section class="journey" id="journey">
   <div class="journey-header reveal">
-    <h2>DE LA TEREN<br>LA RAPORT.<br>AUTOMAT.</h2>
-    <p>Patru pași. Fără efort suplimentar din partea antrenorului.</p>
+     <h2 data-ro="DE LA TEREN&lt;br&gt;LA RAPORT.&lt;br&gt;AUTOMAT." data-en="FROM THE FIELD&lt;br&gt;TO THE REPORT.&lt;br&gt;AUTOMATIC.">DE LA TEREN<br>LA RAPORT.<br>AUTOMAT.</h2>
+    <p data-ro="Patru pași. Fără efort suplimentar din partea antrenorului." data-en="Four steps. No extra effort from the coach.">Patru pași. Fără efort suplimentar din partea antrenorului.</p>
   </div>
   <div class="timeline">
-    <div class="tl-item"><div class="tl-num">01</div><h3>Antrenorul dictează</h3><p>Pe teren, în mișcare. Observațiile se înregistrează pe telefon în timp real.</p></div>
-    <div class="tl-item"><div class="tl-num">02</div><h3>AI-ul procesează</h3><p>Transcripție, clasificare pe sportiv, corelare cu datele existente.</p></div>
-    <div class="tl-item"><div class="tl-num">03</div><h3>Insight-uri apar</h3><p>Pattern-uri, corelații, recomandări personalizate pentru fiecare sportiv.</p></div>
-    <div class="tl-item"><div class="tl-num">04</div><h3>Toți beneficiază</h3><p>Antrenorul decide mai bine. Părinții înțeleg progresul. Sportivul crește.</p></div>
+    <div class="tl-item"><div class="tl-num">01</div><h3 data-ro="Antrenorul dictează" data-en="The coach dictates">Antrenorul dictează</h3><p data-ro="Pe teren, în mișcare. Observațiile se înregistrează pe telefon în timp real." data-en="On the field, on the move. Observations are recorded on the phone in real time.">Pe teren, în mișcare. Observațiile se înregistrează pe telefon în timp real.</p></div>
+    <div class="tl-item"><div class="tl-num">02</div><h3 data-ro="AI-ul procesează" data-en="AI processes">AI-ul procesează</h3><p data-ro="Transcripție, clasificare pe sportiv, corelare cu datele existente." data-en="Transcription, classification by athlete, correlation with existing data.">Transcripție, clasificare pe sportiv, corelare cu datele existente.</p></div>
+    <div class="tl-item"><div class="tl-num">03</div><h3 data-ro="Insight-uri apar" data-en="Insights emerge">Insight-uri apar</h3><p data-ro="Pattern-uri, corelații, recomandări personalizate pentru fiecare sportiv." data-en="Patterns, correlations, personalized recommendations for each athlete.">Pattern-uri, corelații, recomandări personalizate pentru fiecare sportiv.</p></div>
+    <div class="tl-item"><div class="tl-num">04</div><h3 data-ro="Toți beneficiază" data-en="Everyone benefits">Toți beneficiază</h3><p data-ro="Antrenorul decide mai bine. Părinții înțeleg progresul. Sportivul crește." data-en="The coach makes better decisions. Parents understand progress. The athlete grows.">Antrenorul decide mai bine. Părinții înțeleg progresul. Sportivul crește.</p></div>
   </div>
 </section>
 
 <section class="testimonial reveal">
   <div class="test-inner">
-    <p class="test-quote">Înainte scriam notițe pe hârtie și le pierdeam. Acum dictez în timp ce antrenez și părinții primesc rapoarte pe care le înțeleg cu adevărat.</p>
-    <div class="test-author">— <strong>Alexandru M.</strong>, antrenor de tenis, 14 ani experiență</div>
+     <p class="test-quote" data-ro="Înainte scriam notițe pe hârtie și le pierdeam. Acum dictez în timp ce antrenez și părinții primesc rapoarte pe care le înțeleg cu adevărat." data-en="I used to write notes on paper and lose them. Now I dictate while coaching and parents receive reports they actually understand.">Înainte scriam notițe pe hârtie și le pierdeam. Acum dictez în timp ce antrenez și părinții primesc rapoarte pe care le înțeleg cu adevărat.</p>
+    <div class="test-author" data-ro="— &lt;strong&gt;Alexandru M.&lt;/strong&gt;, antrenor de tenis, 14 ani experiență" data-en="— &lt;strong&gt;Alexandru M.&lt;/strong&gt;, tennis coach, 14 years of experience">— <strong>Alexandru M.</strong>, antrenor de tenis, 14 ani experiență</div>
   </div>
 </section>
 
 <section class="demo" id="demo">
   <div class="demo-header reveal">
-    <h2>VEZI ANTRENO<br>ÎN ACȚIUNE</h2>
-    <p>Un scurt demo despre cum funcționează platforma.</p>
+    <h2 data-ro="VEZI ANTRENO&lt;br&gt;ÎN ACȚIUNE" data-en="SEE ANTRENO&lt;br&gt;IN ACTION">VEZI ANTRENO<br>ÎN ACȚIUNE</h2>
+    <p data-ro="Un scurt demo despre cum funcționează platforma." data-en="A short demo of how the platform works.">Un scurt demo despre cum funcționează platforma.</p>
   </div>
   <div class="demo-video reveal">
     <iframe src="https://www.youtube.com/embed/t7sNcCH2wh0" title="Antreno Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -460,20 +473,20 @@
   
 <section class="cta" id="cta">
   <div class="reveal">
-    <h2>FII PRINTRE PRIMII<br>CARE TESTEAZĂ ANTRENO</h2>
-    <p>Lansăm în curând. Lasă-ne email-ul tău și te contactăm când e gata.</p>
+    <h2 data-ro="FII PRINTRE PRIMII&lt;br&gt;CARE TESTEAZĂ ANTRENO" data-en="BE AMONG THE FIRST&lt;br&gt;TO TEST ANTRENO">FII PRINTRE PRIMII<br>CARE TESTEAZĂ ANTRENO</h2>
+    <p data-ro="Lansăm în curând. Lasă-ne email-ul tău și te contactăm când e gata." data-en="Launching soon. Leave your email and we'll contact you when it's ready.">Lansăm în curând. Lasă-ne email-ul tău și te contactăm când e gata.</p>
     <div class="cta-form">
-      <input type="email" class="cta-input" placeholder="email@adresa.ro" id="emailInput">
-      <button class="btn-main" id="ctaBtn">Vreau acces</button>
+       <input type="email" class="cta-input" data-placeholder-ro="email@adresa.ro" data-placeholder-en="email@address.com" placeholder="email@adresa.ro" id="emailInput">
+      <button class="btn-main" id="ctaBtn" data-ro="Vreau acces" data-en="Get access">Vreau acces</button>
     </div>
-    <p class="cta-success" id="ctaSuccess">✓ Te-am adăugat pe lista de așteptare!</p>
-    <p class="cta-error" id="ctaError">Ceva nu a mers. Încearcă din nou sau scrie-ne la contact@antreno.ro</p>
+     <p class="cta-success" id="ctaSuccess" data-ro="✓ Te-am adăugat pe lista de așteptare!" data-en="✓ You've been added to the waitlist!">✓ Te-am adăugat pe lista de așteptare!</p>
+    <p class="cta-error" id="ctaError" data-ro="Ceva nu a mers. Încearcă din nou sau scrie-ne la contact@antreno.ro" data-en="Something went wrong. Try again or email us at contact@antreno.ro">Ceva nu a mers. Încearcă din nou sau scrie-ne la contact@antreno.ro</p>
   </div>
 </section>
 
 <footer>
   <div class="footer-logo"><img src="3_logo.png" alt="Antreno"><span>© 2026 Antreno</span></div>
-  <div class="footer-links"><a href="#">Termeni</a><a href="#">Confidențialitate</a><a href="#">Contact</a></div>
+   <div class="footer-links"><a href="#" data-ro="Termeni" data-en="Terms">Termeni</a><a href="#" data-ro="Confidențialitate" data-en="Privacy">Confidențialitate</a><a href="#" data-ro="Contact" data-en="Contact">Contact</a></div>
 </footer>
 
 <script>
@@ -527,7 +540,8 @@
 
     // Disable button while sending
     btn.disabled = true;
-    btn.textContent = 'Se trimite...';
+    const lang = localStorage.getItem('antreno-lang') || 'ro';
+    btn.textContent = lang === 'en' ? 'Sending...' : 'Se trimite...';
 
     try {
       const response = await fetch('https://formspree.io/f/meeldarn', {
@@ -545,10 +559,10 @@
       if (response.ok) {
         input.value = '';
         successMsg.style.display = 'block';
-        btn.textContent = 'Trimis! ✓';
+         btn.textContent = lang === 'en' ? 'Sent! ✓' : 'Trimis! ✓';
         btn.style.background = 'var(--olive)';
         setTimeout(() => {
-          btn.textContent = 'Vreau acces';
+          btn.textContent = btn.getAttribute('data-' + (localStorage.getItem('antreno-lang') || 'ro'));
           btn.style.background = '';
           btn.disabled = false;
         }, 4000);
@@ -557,11 +571,46 @@
       }
     } catch (err) {
       errorMsg.style.display = 'block';
-      btn.textContent = 'Vreau acces';
+       btn.textContent = btn.getAttribute('data-' + (localStorage.getItem('antreno-lang') || 'ro'));
       btn.disabled = false;
     }
   });
 
+   // ═══════════ LANGUAGE TOGGLE ═══════════
+  const ghostSvg = ' <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M11 6l4 4-4 4"/></svg>';
+ 
+  function setLang(lang) {
+    document.querySelectorAll('[data-ro]').forEach(el => {
+      if (el.classList.contains('btn-ghost')) {
+        el.innerHTML = el.getAttribute('data-' + lang) + ghostSvg;
+      } else if (el.getAttribute('data-' + lang).includes('<')) {
+        el.innerHTML = el.getAttribute('data-' + lang);
+      } else {
+        el.textContent = el.getAttribute('data-' + lang);
+      }
+    });
+    // Handle placeholder
+    document.querySelectorAll('[data-placeholder-ro]').forEach(el => {
+      el.placeholder = el.getAttribute('data-placeholder-' + lang);
+    });
+    // Update html lang attribute
+    document.documentElement.lang = lang === 'en' ? 'en' : 'ro';
+    // Update toggle buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+    localStorage.setItem('antreno-lang', lang);
+  }
+ 
+  // Toggle click handlers
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.getAttribute('data-lang')));
+  });
+ 
+  // Apply saved language on load
+  const savedLang = localStorage.getItem('antreno-lang');
+  if (savedLang && savedLang !== 'ro') setLang(savedLang);
+  
   // Allow Enter key to submit
   document.getElementById('emailInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
