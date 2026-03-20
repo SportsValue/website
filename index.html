@@ -244,6 +244,16 @@
   .test-author { font-size: 0.9rem; color: var(--text-light); }
   .test-author strong { color: var(--text); font-weight: 600; }
 
+    /* ═══════════ DEMO VIDEO ═══════════ */
+  .demo { padding: 140px 48px; background: var(--black); color: var(--warm); text-align: center; position: relative; overflow: hidden; }
+  .demo::before { content: ''; position: absolute; bottom: -200px; left: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,86,42,0.08), transparent 70%); pointer-events: none; }
+  .demo-header { max-width: 1200px; margin: 0 auto 60px; }
+  .demo-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5rem); line-height: 0.92; margin-bottom: 16px; }
+  .demo-header p { color: var(--text-light); font-size: 1.05rem; max-width: 500px; margin: 0 auto; line-height: 1.7; }
+  .demo-video { max-width: 360px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.3); }
+  .demo-video iframe { width: 100%; aspect-ratio: 9 / 16; display: block; }
+
+  
   /* ═══════════ CTA ═══════════ */
   .cta { padding: 120px 48px; background: var(--cream); text-align: center; border-top: 1px solid rgba(0,0,0,0.05); }
   .cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.95; color: var(--black); margin-bottom: 16px; }
@@ -274,6 +284,7 @@
 
   /* ═══════════ RESPONSIVE ═══════════ */
   @media (max-width: 1024px) {
+    .demo { padding: 100px 32px; }
     .hero { grid-template-columns: 1fr; min-height: auto; padding: 160px 32px 80px; }
     .hero-left { padding-right: 0; }
     .hero-right { display: none; }
@@ -285,6 +296,7 @@
     .journey { padding: 100px 32px; }
   }
   @media (max-width: 640px) {
+    .demo { padding: 80px 20px; }
     nav { padding: 16px 20px; }
     .nav-right a:not(.nav-btn) { display: none; }
     .hero { padding: 140px 20px 60px; }
@@ -435,6 +447,17 @@
   </div>
 </section>
 
+<section class="demo" id="demo">
+  <div class="demo-header reveal">
+    <h2>VEZI ANTRENO<br>ÎN ACȚIUNE</h2>
+    <p>Un scurt demo despre cum funcționează platforma.</p>
+  </div>
+  <div class="demo-video reveal">
+    <iframe src="https://www.youtube.com/embed/t7sNcCH2wh0" title="Antreno Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</section>
+
+  
 <section class="cta" id="cta">
   <div class="reveal">
     <h2>FII PRINTRE PRIMII<br>CARE TESTEAZĂ ANTRENO</h2>
